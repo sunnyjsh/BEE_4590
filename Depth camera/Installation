@@ -1,0 +1,42 @@
+### Installation of librealsense in a Raspberry Pi system
+sudo apt-get update && sudo apt-get upgrade
+sudo dpkg --configure -a
+sudo apt-get install git libssl-dev libusb-1.0-0-dev pkg-config libgtk-3-dev
+sudo apt-get install cmake build-essential
+git clone https://github.com/IntelRealSense/librealsense.git
+cd librealsense
+./scripts/setup_udev_rules.sh
+./scripts/patch-realsense-ubuntu-lts.sh
+mkdir build && cd build
+cmake ../ -DBUILD_PYTHON_BINDINGS:bool=true -DCMAKE_BUILD_TYPE=Release -DBUILD_EXAMPLES=false
+##Alternative# cmake ../ -DBUILD_PYTHON_BINDINGS:bool=true -DCMAKE_BUILD_TYPE=Release -DBUILD_EXAMPLES=true
+make -j4
+sudo make install
+
+### Installation of libraries
+cd ~/Desktop
+python3 -m venv plant_env
+source plant_env/bin/activate
+pip install open3d numpy opencv-python pandas matplotlib
+
+### Install OPEN3d
+# Update your package lists and upgrade all packages
+sudo apt update && sudo apt upgrade -y
+
+# Install tools for Python virtual environments
+sudo apt install python3-venv python3-pip -y
+
+# Create a project directory and a virtual environment within it
+mkdir ~/open3d_project
+cd ~/open3d_project
+python3 -m venv o3d-env
+
+# Activate the virtual environment
+source o3d-env/bin/activate
+
+# Upgrade pip within your virtual environment
+pip install --upgrade pip
+
+# Try to install Open3D
+pip install open3d
+
